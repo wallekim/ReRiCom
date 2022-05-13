@@ -2,7 +2,7 @@ from rest_framework import serializers
 from re_api.models import Messages
 from re_api.services import KafkaSender
 
-sender = KafkaSender(bootstrap_servers='localhost:29092', output_topic='message')
+sender = KafkaSender(bootstrap_servers='kafka:9092', output_topic='message')
 sender.start()
 
 
