@@ -1,9 +1,13 @@
-import kafka
 from json import dumps, loads
-import requests
-import jwt
 from decouple import config
+import logging
+import requests
+import kafka
+import jwt
 import re
+
+# log = logging.getLogger(__name__)
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 
 class KafkaListener:
@@ -29,6 +33,7 @@ class KafkaListener:
         try:
             for message in self.consumer:
                 self.consumer.commit()
+                logging.info('message received')
                 parsed_message = loads(message.value.decode('utf-8'))
                 send_validated_resp(data=parsed_message, pattern= '.*абракадабра.*')
 
@@ -51,10 +56,13 @@ def send_validated_resp(data, pattern):
         "post_message_confirm": True,
     }
     token = jwt.encode(role, config('SECRET_JWT'), algorithm="HS256")
-    headers = {'Authorization': token}
-
+    headers = {
+        'Authorization': token
+    }
     requests.post(url='http://0.0.0.0:8000/api/v1/message_confirmation/', headers=headers, data=data_to_send)
+    logging.info('Message posted')
 
 
 consumer = KafkaListener(bootstrap_servers='localhost:29092', input_topic='message', consumer_group='django')
+logging.info('Listening started')
 consumer.start()
