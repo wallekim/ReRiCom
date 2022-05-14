@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from re_api.models import Messages
 from re_api.services import KafkaSender
+from decouple import config
 
-sender = KafkaSender(bootstrap_servers='kafka:9092', output_topic='message')
-sender.start()
+sender = KafkaSender(bootstrap_servers=config('BOOTSTRAP_SERVERS_SENDER'),
+                     output_topic=config('KAFKA_TOPIC'))
 
 
 class MessageSerializer(serializers.ModelSerializer):

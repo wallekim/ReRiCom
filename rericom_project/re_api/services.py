@@ -11,8 +11,6 @@ class KafkaSender():
                  output_topic):
         self.output_topic = output_topic
         self.bootstrap_servers = bootstrap_servers
-
-    def start(self):
         self.producer = kafka.KafkaProducer(bootstrap_servers=self.bootstrap_servers,
                                             value_serializer=lambda v: dumps(v).encode('utf-8'))
 

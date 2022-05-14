@@ -13,3 +13,6 @@ docker-compose build
 ```
 docker-compose up -d
 ```
+Данный проект выполнен Кимом Валентином
+Контактный данные:
+telegram: @kiimonbo

@@ -63,6 +63,8 @@ def send_validated_resp(data, pattern):
     logging.info('Message posted')
 
 
-consumer = KafkaListener(bootstrap_servers='localhost:29092', input_topic='message', consumer_group='django')
-logging.info('Listening started')
-consumer.start()
+if __name__ == "__main__":
+    consumer = KafkaListener(bootstrap_servers=config('BOOTSTRAP_SERVERS_LISTENER'),
+                             input_topic=config('KAFKA_TOPIC'), consumer_group='django')
+    logging.info('Listening started')
+    consumer.start()
